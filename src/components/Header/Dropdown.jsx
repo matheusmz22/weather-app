@@ -23,12 +23,12 @@ function Dropdown() {
   }
 
   return (
-    <details className="text-neutral-0 relative">
+    <details className="text-neutral-0 relative z-1">
       <summary
         onClick={() => setActiveDropdown(!activeDropdown)}
         className={`${
           activeDropdown ? "bg-neutral-600" : "bg-neutral-700"
-        } cursor-pointer flex items-center gap-3   p-2.5 h-10 w-30 opacity-95 rounded-lg list-none hover:bg-neutral-600 transition-colors duration-200 `}
+        } cursor-pointer flex items-center gap-3 h-9 w-fit p-4 sm:p-2.5  sm:h-10 sm:w-30 opacity-95 rounded-lg list-none hover:bg-neutral-600 transition-colors duration-200 `}
       >
         <img src="src/assets/images/icon-units.svg" />
         <p>Units</p>
