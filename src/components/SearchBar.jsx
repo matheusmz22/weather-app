@@ -4,7 +4,7 @@ function SearchBar() {
       <h1 className="text-neutral-0 text-4xl text-center font-semibold">
         How's the sky looking today?
       </h1>
-      <div className="flex items-center justify-center gap-4">
+      <form className="flex items-center justify-center gap-4">
         <input
           placeholder="Search for a place..."
           type="text"
@@ -13,7 +13,7 @@ function SearchBar() {
         <button className="bg-myblue-500 text-neutral-0 p-3 rounded-xl w-28 cursor-pointer hover:bg-myblue-700 transition-all duration-150 focus:outline-2 focus:outline-offset-2 focus:outline-myblue-500">
           Search
         </button>
-      </div>
+      </form>
     </div>
   );
 }
