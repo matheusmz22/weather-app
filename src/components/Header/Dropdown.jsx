@@ -6,6 +6,21 @@ function Dropdown() {
   const [activePrecipitation, setActivePrecipitation] =
     useState("Millimeters (mm)");
   const [activeDropdown, setActiveDropdown] = useState(false);
+  const [isImperial, setIsImperial] = useState(true);
+
+  function handleImperialClick() {
+    setIsImperial((active) => !active);
+
+    if (isImperial) {
+      setActiveTemperature("Fahrenheit (°F)");
+      setActiveWindSpeed("mph");
+      setActivePrecipitation("Inches (in)");
+    } else {
+      setActiveTemperature("Celsius (°C)");
+      setActiveWindSpeed("km/h");
+      setActivePrecipitation("Millimeters (mm)");
+    }
+  }
 
   return (
     <details className="text-neutral-0 relative">
@@ -19,9 +34,14 @@ function Dropdown() {
         <p>Units</p>
         <img src="src/assets/images/icon-dropdown.svg" />
       </summary>
-      <div className="absolute bg-neutral-800 mt-2 rounded-xl w-50 -right-0.5 border-1 border-neutral-600 shadow-lg p-3">
-        <button className="w-full text-left cursor-pointer rounded-md h-9 hover:bg-neutral-600 transition-colors duration-200 ">
-          <span className="ml-2">Switch to imperial</span>
+      <div className="absolute bg-neutral-800 mt-2 rounded-xl w-60 -right-0.5 border-1 border-neutral-600 shadow-lg p-3">
+        <button
+          className="w-full text-left cursor-pointer rounded-md h-9 hover:bg-neutral-600 transition-colors duration-200 "
+          onClick={handleImperialClick}
+        >
+          <span className="ml-2">
+            {isImperial ? "Switch to Imperial" : "Switch to Metric System"}
+          </span>
         </button>
 
         <DropdownContent
