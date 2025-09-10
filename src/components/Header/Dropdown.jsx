@@ -34,7 +34,7 @@ function Dropdown() {
         <p>Units</p>
         <img src="src/assets/images/icon-dropdown.svg" />
       </summary>
-      <div className="absolute bg-neutral-800 mt-2 rounded-xl w-60 -right-0.5 border-1 border-neutral-600 shadow-lg p-3">
+      <div className="absolute bg-neutral-800 mt-2 rounded-xl w-60 -right-0.5 border-1 border-neutral-600 shadow-lg p-3 md:w-50 ">
         <button
           className="w-full text-left cursor-pointer rounded-md h-9 hover:bg-neutral-600 transition-colors duration-200 "
           onClick={handleImperialClick}

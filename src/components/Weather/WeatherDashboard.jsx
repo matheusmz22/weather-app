@@ -1,6 +1,7 @@
 import useIsMobile from "../Hooks/useIsMobile";
 import CurrentWeatherCard from "./CurrentWeatherCard";
 import DailyForecast from "./DailyForecast";
+import HourlyForecast from "./HourlyForecast";
 import StatCard from "./StatCard";
 
 function WeatherDashboard() {
@@ -30,7 +31,7 @@ function WeatherDashboard() {
         >
           Daily Forecast
         </p>
-        <div className="flex flex-wrap gap-3 items-center justify-center sm:justify-start w-full lg:gap-9  md:justify-start">
+        <div className="flex flex-wrap gap-3 items-center justify-center sm:justify-start w-full lg:gap-9  md:justify-start md:flex-nowrap">
           <DailyForecast
             weekday="Tue"
             climateIcon="/src/assets/images/icon-rain.webp"
@@ -76,9 +77,7 @@ function WeatherDashboard() {
         </div>
       </div>
       <div className="col-span-3 sm:col-start-6 sm:row-start-1 sm:row-span-3 md:row-span-2 md:row-start-1 lg:row-span-3 lg:row-start-1">
-        <div className="bg-neutral-700 rounded-2xl p-6 w-full h-full">
-          <p className="text-lg font-semibold text-neutral-0">Placeholder</p>
-        </div>
+        <HourlyForecast />
       </div>
     </div>
   );
