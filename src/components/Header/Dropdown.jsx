@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 
 function Dropdown() {
   const [activeTemperature, setActiveTemperature] = useState("Celsius (°C)");
@@ -102,7 +102,7 @@ function DropdownContent({
 }
 
 // Button Component Only used for dropdown
-function Button({ isActive, children, onClick }) {
+function Button({isActive, children, onClick}) {
   return (
     <button
       onClick={onClick}

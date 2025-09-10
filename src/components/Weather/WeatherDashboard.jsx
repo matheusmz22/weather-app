@@ -1,26 +1,36 @@
+import useIsMobile from "../Hooks/useIsMobile";
 import CurrentWeatherCard from "./CurrentWeatherCard";
 import DailyForecast from "./DailyForecast";
 import StatCard from "./StatCard";
 
 function WeatherDashboard() {
+  const {isMediumMobile} = useIsMobile();
+
   return (
-    <div className="grid grid-cols-1 gap-4 text-amber-50 sm:grid-cols-8 sm:gap-6 sm:mx-20 justify-items-center sm:justify-items-stretch sm:gap-x-10 xl:mx-auto xl:max-w-[90rem]">
-      {/* LEFT COLUMN */}
-      <div className="sm:col-span-5 lg:col-span-6 xl:col-span-6 sm:space-y-3 min-w-0 ">
-        {/* MAIN WEATHER CARD */}
+    <div className="grid gap-3 mt-4 px-6 sm:grid-cols-8 md:mx-20">
+      <div className="col-span-3 sm:col-span-5">
         <CurrentWeatherCard />
+      </div>
 
-        {/* STATS - SUBGRID 4 COLUMNS */}
-        <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4 mt-4">
+      <div className="col-span-3 sm:col-span-5 place-items-stretch">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:justify-between lg:justify-between ">
           <StatCard title="Feels like" content="64°" />
-          <StatCard title="Humidity" content="46%" />
-          <StatCard title="Wind" content="9 mph" />
-          <StatCard title="Precipitation" content="0 in" />
+          <StatCard title="Feels like" content="64°" />
+          <StatCard title="Feels like" content="64°" />
+          <StatCard title="Feels like" content="64°" />
         </div>
+      </div>
+      {/*  */}
 
-        <p className="mt-4 mb-2 font-semibold">Daily forecast</p>
-        <div className="grid sm:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] grid-cols-3 gap-4">
-          {/* DAILY FORECAST, 7*/}
+      <div className="col-span-3 sm:col-span-5 md:col-span-8 lg:col-span-5">
+        <p
+          className={`text-neutral-100 mt-4 mb-2 ${
+            isMediumMobile && "w-100"
+          } w-75 md:w-full font-semibold mx-auto`}
+        >
+          Daily Forecast
+        </p>
+        <div className="flex flex-wrap gap-3 items-center justify-center sm:justify-start w-full lg:gap-9  md:justify-start">
           <DailyForecast
             weekday="Tue"
             climateIcon="/src/assets/images/icon-rain.webp"
@@ -65,12 +75,9 @@ function WeatherDashboard() {
           />
         </div>
       </div>
-
-      {/* Right Column, Forecast by hour */}
-      <div className="col-span-3 lg:col-span-2 xl:col-span-2">
-        {/* <HourlyForecast/> */}
-        <div className="bg-[#1a1a2e] rounded-2xl p-6 w-full h-full mt-4">
-          <p className="text-lg font-semibold">Hourly forecast (placeholder)</p>
+      <div className="col-span-3 sm:col-start-6 sm:row-start-1 sm:row-span-3 md:row-span-2 md:row-start-1 lg:row-span-3 lg:row-start-1">
+        <div className="bg-neutral-700 rounded-2xl p-6 w-full h-full">
+          <p className="text-lg font-semibold text-neutral-0">Placeholder</p>
         </div>
       </div>
     </div>
