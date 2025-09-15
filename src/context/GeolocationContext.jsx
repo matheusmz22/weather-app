@@ -19,8 +19,6 @@ function GeolocationProvider({children}) {
       const longitude = position.coords.longitude;
 
       setCoords({latitude, longitude});
-      const countryData = await getWeather(latitude, longitude);
-      console.log(countryData);
     } catch (err) {
       setError(err.message);
     } finally {
