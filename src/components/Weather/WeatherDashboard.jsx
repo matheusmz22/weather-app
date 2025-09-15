@@ -1,4 +1,4 @@
-import useIsMobile from "../Hooks/useIsMobile";
+import useIsMobile from "../../Hooks/useIsMobile";
 import CurrentWeatherCard from "./CurrentWeatherCard";
 import DailyForecast from "./DailyForecast";
 import HourlyForecast from "./HourlyForecast";
@@ -15,10 +15,10 @@ function WeatherDashboard() {
 
       <div className="col-span-3 sm:col-span-5 place-items-stretch">
         <div className="flex flex-wrap items-center justify-center gap-4 sm:justify-between lg:justify-between ">
-          <StatCard title="Feels like" content="64°" />
-          <StatCard title="Feels like" content="64°" />
-          <StatCard title="Feels like" content="64°" />
-          <StatCard title="Feels like" content="64°" />
+          <StatCard title="Feels like" content="18°" />
+          <StatCard title="Humidity" content="46%" />
+          <StatCard title="Wind" content="14km/h" />
+          <StatCard title="Precipitation" content="0mm" />
         </div>
       </div>
       {/*  */}

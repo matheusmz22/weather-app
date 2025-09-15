@@ -1,17 +1,46 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import {useUnits} from "../../context/UnitsContext";
 
 function Dropdown() {
-  const [activeTemperature, setActiveTemperature] = useState("Celsius (°C)");
-  const [activeWindSpeed, setActiveWindSpeed] = useState("km/h");
-  const [activePrecipitation, setActivePrecipitation] =
-    useState("Millimeters (mm)");
+  const {
+    activeTemperature,
+    setActiveTemperature,
+    activeWindSpeed,
+    setActiveWindSpeed,
+    activePrecipitation,
+    setActivePrecipitation,
+    isMetric,
+    setIsMetric,
+  } = useUnits();
   const [activeDropdown, setActiveDropdown] = useState(false);
-  const [isImperial, setIsImperial] = useState(true);
+  const ref = useRef(null);
+
+  useEffect(
+    function () {
+      function handleClick(e) {
+        if (ref.current && !ref.current.contains(e.target))
+          setActiveDropdown(false);
+      }
+
+      function handleKeyDown(e) {
+        if (e.key === "Escape") setActiveDropdown(false);
+      }
+
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("click", handleClick, true);
+
+      return () => {
+        document.removeEventListener("click", handleClick);
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    },
+    [setActiveDropdown]
+  );
 
   function handleImperialClick() {
-    setIsImperial((active) => !active);
+    setIsMetric((active) => !active);
 
-    if (isImperial) {
+    if (isMetric) {
       setActiveTemperature("Fahrenheit (°F)");
       setActiveWindSpeed("mph");
       setActivePrecipitation("Inches (in)");
@@ -23,53 +52,55 @@ function Dropdown() {
   }
 
   return (
-    <details className="text-neutral-0 relative z-1">
-      <summary
-        onClick={() => setActiveDropdown(!activeDropdown)}
+    <div className="text-neutral-0 relative z-1" ref={ref}>
+      <button
+        onClick={() => setActiveDropdown((active) => !active)}
         className={`${
           activeDropdown ? "bg-neutral-600" : "bg-neutral-700"
-        } cursor-pointer flex items-center gap-3 h-9 w-fit p-4 sm:p-2.5  sm:h-10 sm:w-30 opacity-95 rounded-lg list-none hover:bg-neutral-600 transition-colors duration-200 `}
+        } cursor-pointer flex items-center gap-3 h-9 w-fit p-4 sm:p-2.5  sm:h-10 sm:w-30 opacity-95 rounded-lg list-none hover:bg-neutral-600 transition-colors duration-200 dropdown`}
       >
         <img src="src/assets/images/icon-units.svg" />
         <p>Units</p>
         <img src="src/assets/images/icon-dropdown.svg" />
-      </summary>
-      <div className="absolute bg-neutral-800 mt-2 rounded-xl w-60 -right-0.5 border-1 border-neutral-600 shadow-lg p-3 md:w-50 ">
-        <button
-          className="w-full text-left cursor-pointer rounded-md h-9 hover:bg-neutral-600 transition-colors duration-200 "
-          onClick={handleImperialClick}
-        >
-          <span className="ml-2">
-            {isImperial ? "Switch to Imperial" : "Switch to Metric System"}
-          </span>
-        </button>
+      </button>
+      {activeDropdown && (
+        <div className="absolute bg-neutral-800 mt-2 rounded-xl w-60 -right-0.5 border-1 border-neutral-600 shadow-lg p-3 md:w-50 ">
+          <button
+            className="w-full text-left cursor-pointer rounded-md h-9 hover:bg-neutral-600 transition-colors duration-200 "
+            onClick={handleImperialClick}
+          >
+            <span className="px-1.5 text-sm">
+              {isMetric ? "Switch to Imperial" : "Switch to Metric System"}
+            </span>
+          </button>
 
-        <DropdownContent
-          title="Temperature"
-          firstButtonText="Celsius (°C)"
-          secondButtonText="Fahrenheit (°F)"
-          activeOption={activeTemperature}
-          setActiveOption={setActiveTemperature}
-        />
-        <div className="h-px bg-neutral-400 opacity-40 mt-3" />
-        <DropdownContent
-          title="Wind Speed"
-          firstButtonText="km/h"
-          secondButtonText="mph"
-          activeOption={activeWindSpeed}
-          setActiveOption={setActiveWindSpeed}
-        />
-        <div className="h-px bg-neutral-400 opacity-40 mt-3" />
+          <DropdownContent
+            title="Temperature"
+            firstButtonText="Celsius (°C)"
+            secondButtonText="Fahrenheit (°F)"
+            activeOption={activeTemperature}
+            setActiveOption={setActiveTemperature}
+          />
+          <div className="h-px bg-neutral-400 opacity-40 mt-3" />
+          <DropdownContent
+            title="Wind Speed"
+            firstButtonText="km/h"
+            secondButtonText="mph"
+            activeOption={activeWindSpeed}
+            setActiveOption={setActiveWindSpeed}
+          />
+          <div className="h-px bg-neutral-400 opacity-40 mt-3" />
 
-        <DropdownContent
-          title="Precipitation"
-          firstButtonText="Millimeters (mm)"
-          secondButtonText="Inches (in)"
-          activeOption={activePrecipitation}
-          setActiveOption={setActivePrecipitation}
-        />
-      </div>
-    </details>
+          <DropdownContent
+            title="Precipitation"
+            firstButtonText="Millimeters (mm)"
+            secondButtonText="Inches (in)"
+            activeOption={activePrecipitation}
+            setActiveOption={setActivePrecipitation}
+          />
+        </div>
+      )}
+    </div>
   );
 }
 

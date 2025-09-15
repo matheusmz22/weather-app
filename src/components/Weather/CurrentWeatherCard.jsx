@@ -1,4 +1,4 @@
-import useIsMobile from "../Hooks/useIsMobile";
+import useIsMobile from "../../Hooks/useIsMobile";
 
 function CurrentWeatherCard() {
   const {isMediumMobile} = useIsMobile();
