@@ -1,4 +1,6 @@
 import {useEffect, useRef, useState} from "react";
+import useCurrentWeather from "../../Hooks/useCurrentWeather";
+import {useGeolocation} from "../../context/GeolocationContext";
 
 const tempHours = [
   "3 PM",
@@ -12,22 +14,17 @@ const tempHours = [
   "11 PM",
 ];
 
-const weekDays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
 function HourlyForecast() {
   const [openDropdown, setOpenDropdown] = useState(false);
   const ref = useRef(null);
 
-  const weekDayInNumber = new Date().getDay();
-  const weekDay = weekDays[weekDayInNumber];
+  const {coords} = useGeolocation();
+  const {data, isLoading} = useCurrentWeather(
+    coords?.latitude,
+    coords?.longitude
+  );
+
+  const weekDay = new Date().toLocaleString("default", {weekday: "long"});
 
   useEffect(() => {
     function handleClick(e) {
@@ -49,7 +46,7 @@ function HourlyForecast() {
   }, []);
 
   return (
-    <div className="bg-neutral-800 rounded-xl p-2 w-full md:w-fit lg:w-full relative">
+    <div className="bg-neutral-800 rounded-xl p-4 w-full md:w-fit lg:w-full relative">
       <div className="text-md font-semibold text-neutral-0 flex items-center justify-between md:gap-4 p-2">
         <h1 className="md:text-lef">Hourly forecast</h1>
         <div ref={ref} className="relative">
@@ -82,12 +79,16 @@ function HourlyForecast() {
             key={hour}
             className="flex items-center justify-start text-neutral-100 w-full  h-13 border-2 border-neutral-600 bg-neutral-700 my-2 gap-2 px-3 rounded-md transition-colors duration-200 "
           >
-            <img
-              src="src/assets/images/icon-rain.webp"
-              alt="It will be {CLIMATE} at {HOUR}"
-              className="w-9"
-            />
-            <span className="">{hour}</span>
+            {isLoading || (
+              <>
+                <img
+                  src="src/assets/images/icon-rain.webp"
+                  alt="It will be {CLIMATE} at {HOUR}"
+                  className="w-9"
+                />
+                <span className="">{hour}</span>
+              </>
+            )}
           </div>
         ))}
       </div>

@@ -1,6 +1,6 @@
 import {createContext, useContext, useState} from "react";
 import {getCoords} from "../services/getCoords";
-import {getWeather} from "../services/getWeather";
+import {getCityName} from "../services/getCityName";
 
 const GeolocationContext = createContext();
 
@@ -8,6 +8,7 @@ function GeolocationProvider({children}) {
   const [coords, setCoords] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [city, setCity] = useState(null);
 
   async function fetchLocation() {
     setIsLoading(true);
@@ -18,7 +19,11 @@ function GeolocationProvider({children}) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
+      const data = await getCityName(latitude, longitude);
+      const city = data.city;
+
       setCoords({latitude, longitude});
+      setCity(city);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -27,7 +32,7 @@ function GeolocationProvider({children}) {
   }
   return (
     <GeolocationContext.Provider
-      value={{coords, isLoading, error, fetchLocation}}
+      value={{coords, city, isLoading, error, fetchLocation}}
     >
       {children}
     </GeolocationContext.Provider>
