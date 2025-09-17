@@ -6,7 +6,7 @@ import {useGeolocation} from "../context/GeolocationContext";
 
 function SearchBar() {
   const {isMediumMobile} = useIsMobile();
-  const {coords, isLoading, fetchLocation} = useGeolocation();
+  const {_, isLoading, fetchLocation} = useGeolocation();
 
   return (
     <div className="flex flex-col items-center gap-6 sm:gap-10 mb-2">

@@ -1,23 +1,25 @@
 const weatherIcons = {
   clear: "icon-clear.webp",
-  clouds: "icon-sunny.webp",
+  clouds: "icon-clouds.webp",
   drizzle: "icon-drizzle.webp",
   rain: "icon-rain.webp",
   snow: "icon-snow.webp",
   thunderstorm: "icon-thunderstorm.webp",
   fog: "icon-fog.webp",
+  "party-cloudy": "icon-partly-cloudy.webp",
 };
 
-export function mapWeatherToIcon(weather) {
+export function mapWeatherToIcon(weather, clouds = null) {
   const main = weather?.main;
-  const clouds = weather.clouds?.all ?? null;
+  const cloudsValue = weather?.clouds?.all ?? clouds;
 
   switch (main) {
     case "Clear":
       return weatherIcons["clear"];
 
     case "Clouds":
-      if (clouds !== null && clouds < 50) return "party-cloudy";
+      if (cloudsValue !== null && clouds < 50)
+        return weatherIcons["party-cloudy"];
       return weatherIcons["clouds"];
 
     case "Drizzle":

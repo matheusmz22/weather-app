@@ -5,10 +5,7 @@ import useIsMobile from "../../Hooks/useIsMobile";
 function StatCard({title, content}) {
   const {isGalaxy, isMediumMobile} = useIsMobile();
   const {coords} = useGeolocation();
-  const {data, isLoading} = useCurrentWeather(
-    coords?.latitude,
-    coords?.longitude
-  );
+  const {_, isLoading} = useCurrentWeather();
   return (
     <div
       className={`${isGalaxy ? "w-35" : "w-37"} ${
@@ -17,7 +14,7 @@ function StatCard({title, content}) {
     >
       <header className="text-xl text-neutral-300">{title}</header>
       <p className="text-3xl text-neutral-200">
-        {isLoading ? <span>&mdash;</span> : content}
+        {isLoading || !coords ? <span>&mdash;</span> : content}
       </p>
     </div>
   );

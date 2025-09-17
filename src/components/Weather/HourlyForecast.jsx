@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from "react";
 import useCurrentWeather from "../../Hooks/useCurrentWeather";
-import {useGeolocation} from "../../context/GeolocationContext";
 
 const tempHours = [
   "3 PM",
@@ -13,16 +12,21 @@ const tempHours = [
   "10 PM",
   "11 PM",
 ];
+const weekDays = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 function HourlyForecast() {
   const [openDropdown, setOpenDropdown] = useState(false);
   const ref = useRef(null);
 
-  const {coords} = useGeolocation();
-  const {data, isLoading} = useCurrentWeather(
-    coords?.latitude,
-    coords?.longitude
-  );
+  const {data, isLoading} = useCurrentWeather();
 
   const weekDay = new Date().toLocaleString("default", {weekday: "long"});
 
@@ -58,13 +62,13 @@ function HourlyForecast() {
             <img src="src/assets/images/icon-dropdown.svg" />
           </button>
           {openDropdown && (
-            <div className="absolute md:w-45  flex flex-col items-start justify-center bg-neutral-800 font-normal mt-2 rounded-xl w-60 right-2 border-1 border-neutral-600 shadow-lg p-3 ">
+            <div className="absolute md:w-45  flex flex-col items-start justify-center bg-neutral-800 font-normal mt-2 rounded-xl w-60 right-2 border-1  border-neutral-600 shadow-lg p-1.5 ">
               {weekDays.map((day) => (
                 <button
                   key={day}
                   className={`${
                     day === weekDay ? "bg-neutral-600" : ""
-                  } hover:bg-neutral-600 text-left md:p-[5px] w-full p-2 mb-2 rounded-lg`}
+                  } hover:bg-neutral-600 text-left md:p-[5px] w-full cursor-pointer p-2 mb-2 rounded-lg`}
                 >
                   {day}
                 </button>
@@ -79,7 +83,7 @@ function HourlyForecast() {
             key={hour}
             className="flex items-center justify-start text-neutral-100 w-full  h-13 border-2 border-neutral-600 bg-neutral-700 my-2 gap-2 px-3 rounded-md transition-colors duration-200 "
           >
-            {isLoading || (
+            {isLoading || !data || (
               <>
                 <img
                   src="src/assets/images/icon-rain.webp"

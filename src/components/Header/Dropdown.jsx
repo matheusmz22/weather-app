@@ -1,18 +1,18 @@
 import {useEffect, useRef, useState} from "react";
-import {useUnits} from "../../context/UnitsContext";
+import {
+  usePrecipitationUnit,
+  useTemperatureUnit,
+  useWindUnit,
+} from "../../context/UnitsContext";
 
 function Dropdown() {
-  const {
-    activeTemperature,
-    setActiveTemperature,
-    activeWindSpeed,
-    setActiveWindSpeed,
-    activePrecipitation,
-    setActivePrecipitation,
-    isMetric,
-    setIsMetric,
-  } = useUnits();
+  const {activeTemperature, setActiveTemperature} = useTemperatureUnit();
+  const {activeWindSpeed, setActiveWindSpeed} = useWindUnit();
+  const {activePrecipitation, setActivePrecipitation} = usePrecipitationUnit();
+
+  const [isMetric, setIsMetric] = useState();
   const [activeDropdown, setActiveDropdown] = useState(false);
+
   const ref = useRef(null);
 
   useEffect(

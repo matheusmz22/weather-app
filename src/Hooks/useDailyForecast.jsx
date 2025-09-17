@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import {useUnits} from "../context/UnitsContext";
+import {useTemperatureUnit} from "../context/UnitsContext";
 import {getWeather} from "../services/getWeather";
 
 function useDailyForecast(latitude, longitude) {
-  const {activeTemperature} = useUnits();
+  const {activeTemperature} = useTemperatureUnit();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState();
 

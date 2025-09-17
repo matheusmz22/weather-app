@@ -10,16 +10,13 @@ function getCountryName(countryCode) {
 
 function CurrentWeatherCard() {
   const {isMediumMobile} = useIsMobile();
-  const {coords, city} = useGeolocation();
-  const {data, isLoading} = useCurrentWeather(
-    coords?.latitude,
-    coords?.longitude
-  );
+  const {_, city} = useGeolocation();
+  const {data, isLoading} = useCurrentWeather("weather");
 
-  const todayWeather = data?.list[0];
-  const currentTemp = Math.ceil(todayWeather?.main?.temp);
+  const todayWeather = data?.main;
+  const currentTemp = Math.ceil(todayWeather?.temp);
   const weatherIcon = mapWeatherToIcon({
-    main: todayWeather?.weather[0]?.main,
+    main: todayWeather?.main,
     clouds: todayWeather?.clouds,
   });
 
@@ -46,7 +43,7 @@ function CurrentWeatherCard() {
     );
   }
 
-  if (!coords || !data) {
+  if (!data) {
     return (
       <div
         className={`relative ${
@@ -85,11 +82,12 @@ function CurrentWeatherCard() {
             <img
               src={`/src/assets/images/${weatherIcon}`}
               alt="Sunny day in Berlin, Germany"
-              className="w-20 sm:w-35"
+              className="w-30 sm:w-35"
             />
           )}
+
           {currentTemp !== undefined && (
-            <h1 className="text-5xl sm:text-8xl font-semibold italic">
+            <h1 className="text-7xl sm:text-8xl font-semibold italic">
               {currentTemp}°
             </h1>
           )}
