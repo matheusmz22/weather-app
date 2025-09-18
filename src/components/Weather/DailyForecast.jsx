@@ -4,7 +4,7 @@ function DailyForecast({weekday, climateIcon, maxTemp, minTemp}) {
   const {data, isLoading} = useCurrentWeather();
 
   return (
-    <div className="h-32 w-22 md:h-30 md:max-w-19 lg:max-w-30 lg:w-30  bg-neutral-700 border-2 border-neutral-600 rounded-2xl flex flex-col  items-center justify-center text-neutral-100 text-lg  sm:text-xl">
+    <div className="h-32 w-22 md:h-30 md:max-w-19 lg:max-w-30 lg:w-28  bg-neutral-700 border-2 border-neutral-600 rounded-2xl flex flex-col  items-center justify-center text-neutral-100 text-lg  sm:text-xl">
       {isLoading || !data || (
         <>
           <header>{weekday}</header>

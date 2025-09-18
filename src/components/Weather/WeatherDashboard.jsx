@@ -1,4 +1,6 @@
 import {usePrecipitationUnit, useWindUnit} from "../../context/UnitsContext";
+import {getPrecipitation} from "../../helpers/getPrecipitation";
+import {groupForecastByDay} from "../../helpers/groupForecastByDay";
 import {mapWeatherToIcon} from "../../helpers/mapWeatherToIcon";
 import useCurrentWeather from "../../Hooks/useCurrentWeather";
 import useIsMobile from "../../Hooks/useIsMobile";
@@ -7,22 +9,22 @@ import DailyForecast from "./DailyForecast";
 import HourlyForecast from "./HourlyForecast";
 import StatCard from "./StatCard";
 
-const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
 function WeatherDashboard() {
   const {isMediumMobile} = useIsMobile();
   const {activeWindSpeed} = useWindUnit();
   const {activePrecipitation} = usePrecipitationUnit();
 
   const {data: currentWeather, _} = useCurrentWeather("weather");
+  const todayWeather = currentWeather?.main;
+
   const {data: forecastData} = useCurrentWeather("forecast");
+  const dailyForecast = groupForecastByDay(forecastData?.list);
 
   const weatherIcon = mapWeatherToIcon({
     main: currentWeather?.weather,
     clouds: currentWeather?.clouds,
   });
 
-  const todayWeather = currentWeather?.main;
   const precipitation = getPrecipitation(
     currentWeather,
     activePrecipitation === "Millimeters (mm)" ? "mm" : "in"
@@ -31,51 +33,6 @@ function WeatherDashboard() {
   const date = new Date();
   const weekDay = date.toLocaleString("default", {weekday: "short"});
 
-  // console.log(forecastData);
-  // console.log(weekDay);
-
-  let dailyForecast = [];
-  let itemDateCopy = new Date().getDate();
-  let min = Number.MAX_SAFE_INTEGER;
-  let max = Number.MIN_SAFE_INTEGER;
-  let clouds = 0;
-  if (forecastData && forecastData.list) {
-    forecastData.list.forEach((item, i, arr) => {
-      const itemDate = new Date(item.dt * 1000).getDate();
-      const itemWeekDay = new Date(item.dt * 1000).toLocaleString("default", {
-        weekday: "short",
-      });
-      console.log(itemWeekDay);
-      if (itemDate === itemDateCopy) {
-        if (item.main.temp_min < min) min = item.main.temp_min;
-        if (item.main.temp_max > max) max = item.main.temp_max;
-        if (item.clouds.all > clouds) clouds = item.clouds.all;
-      } else {
-        const weather = item.weather;
-        dailyForecast.push({
-          tempMin: min,
-          tempMax: max,
-          weather: weather,
-          clouds: clouds,
-          day: itemWeekDay,
-        });
-        clouds = 0;
-        min = Number.MAX_SAFE_INTEGER;
-        max = Number.MIN_SAFE_INTEGER;
-        itemDateCopy = itemDate;
-      }
-      if (i === arr.length - 1) {
-        const weather = item.weather;
-        dailyForecast.push({
-          tempMin: min,
-          tempMax: max,
-          weather: weather,
-          clouds: clouds,
-          day: itemWeekDay,
-        });
-      }
-    });
-  }
   return (
     <div className="grid gap-3 mt-4 px-6 sm:grid-cols-8 md:mx-20">
       <div className="col-span-3 sm:col-span-5">
@@ -106,12 +63,14 @@ function WeatherDashboard() {
           Daily Forecast
         </p>
         <div className="flex flex-wrap gap-3 items-center justify-center sm:justify-start w-full lg:gap-9  md:justify-start md:flex-nowrap">
-          <DailyForecast
-            weekday={weekDay}
-            climateIcon={`/src/assets/images/${weatherIcon}`}
-            maxTemp={Math.ceil(todayWeather?.temp_max) + "°"}
-            minTemp={Math.ceil(todayWeather?.temp_min) + "°"}
-          />
+          {!dailyForecast.some((day) => weekDay === day.day) && (
+            <DailyForecast
+              weekday={weekDay}
+              climateIcon={`/src/assets/images/${weatherIcon}`}
+              maxTemp={Math.ceil(todayWeather?.temp_max) + "°"}
+              minTemp={Math.ceil(todayWeather?.temp_min) + "°"}
+            />
+          )}
 
           {dailyForecast.map((day, i) => {
             const weatherIcon = mapWeatherToIcon(day.weather[0], day.clouds);
@@ -136,14 +95,3 @@ function WeatherDashboard() {
 }
 
 export default WeatherDashboard;
-
-function getPrecipitation(data, unit = "mm") {
-  if (!data) return `0 ${unit}`;
-
-  const rain = data.rain?.["1h"] ?? data.rain?.["3h"];
-  const snow = data.snow?.["1h"] ?? data.snow?.["3h"];
-
-  const value = rain ?? snow ?? 0;
-
-  return `${value} ${unit}`;
-}
