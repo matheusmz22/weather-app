@@ -34,7 +34,7 @@ function WeatherDashboard() {
   const weekDay = date.toLocaleString("default", {weekday: "short"});
 
   return (
-    <div className="grid gap-3 mt-4 px-6 sm:grid-cols-8 md:mx-20">
+    <div className="grid gap-3 mt-4 sm:grid-cols-8 md:mx-20">
       <div className="col-span-3 sm:col-span-5">
         <CurrentWeatherCard />
       </div>
@@ -56,7 +56,7 @@ function WeatherDashboard() {
 
       <div className="col-span-3 sm:col-span-5 md:col-span-8 lg:col-span-5">
         <p
-          className={`text-neutral-100 mt-4 mb-2 ${
+          className={`text-neutral-100 mt-2 mb-2 ${
             isMediumMobile && "w-100"
           } w-75 md:w-full font-semibold mx-auto`}
         >

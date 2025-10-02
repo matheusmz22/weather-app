@@ -1,6 +1,6 @@
 import Header from "./components/Header/Header";
-import SearchBar from "./components/SearchBar";
 import WeatherDashboard from "./components/Weather/WeatherDashboard";
+import SearchBar from "./SearchBar/SearchBar";
 
 function App() {
   return (

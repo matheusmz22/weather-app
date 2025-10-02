@@ -9,11 +9,11 @@ function SearchBar() {
   const {_, isLoading, fetchLocation} = useGeolocation();
 
   return (
-    <div className="flex flex-col items-center gap-6 sm:gap-10 mb-2">
-      <h1 className="text-neutral-0 text-4xl text-center font-semibold sm:mt-[-2rem]">
+    <div className="flex flex-col items-center gap-2 sm:gap-5">
+      <h1 className="text-neutral-0 text-4xl text-center font-semibold">
         How's the sky looking today?
       </h1>
-      <div className="flex items-center justify-between flex-col sm:flex-row gap-3 mx-auto">
+      <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mx-auto">
         <input
           placeholder="Search for a place..."
           type="text"
