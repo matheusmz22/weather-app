@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import useCurrentWeather from "../../Hooks/useCurrentWeather";
+import {formatHour} from "../../helpers/formatHour";
 
 const tempHours = [
   "12 AM",
@@ -31,13 +32,17 @@ const weekDays2 = {
 };
 
 const weekDay = new Date().toLocaleString("default", {weekday: "long"});
-function HourlyForecast() {
+function HourlyForecast({isMetric, setIsMetric}) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [selectedDay, setSelectedDay] = useState(weekDay);
   const ref = useRef(null);
 
   const {data, isLoading} = useCurrentWeather();
   const forecast = data?.list;
+
+  const hour = formatHour(forecast[0]?.dt_txt, isMetric);
+  console.log(hour);
+
   console.log(forecast);
 
   useEffect(() => {

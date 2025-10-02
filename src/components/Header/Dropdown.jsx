@@ -5,12 +5,11 @@ import {
   useWindUnit,
 } from "../../context/UnitsContext";
 
-function Dropdown() {
+function Dropdown({isMetric, setIsMetric}) {
   const {activeTemperature, setActiveTemperature} = useTemperatureUnit();
   const {activeWindSpeed, setActiveWindSpeed} = useWindUnit();
   const {activePrecipitation, setActivePrecipitation} = usePrecipitationUnit();
 
-  const [isMetric, setIsMetric] = useState();
   const [activeDropdown, setActiveDropdown] = useState(false);
 
   const ref = useRef(null);

@@ -9,7 +9,7 @@ import DailyForecast from "./DailyForecast";
 import HourlyForecast from "./HourlyForecast";
 import StatCard from "./StatCard";
 
-function WeatherDashboard() {
+function WeatherDashboard({isMetric, setIsMetric}) {
   const {isMediumMobile} = useIsMobile();
   const {activeWindSpeed} = useWindUnit();
   const {activePrecipitation} = usePrecipitationUnit();
@@ -88,7 +88,7 @@ function WeatherDashboard() {
         </div>
       </div>
       <div className="col-span-3 sm:col-start-6 sm:row-start-1 sm:row-span-3 md:row-span-2 md:row-start-1 lg:row-span-3 lg:row-start-1">
-        <HourlyForecast />
+        <HourlyForecast isMetric={isMetric} setIsMetric={setIsMetric} />
       </div>
     </div>
   );
