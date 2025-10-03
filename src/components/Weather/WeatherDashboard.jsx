@@ -66,7 +66,7 @@ function WeatherDashboard({isMetric, setIsMetric}) {
           {!dailyForecast.some((day) => weekDay === day.day) && (
             <DailyForecast
               weekday={weekDay}
-              climateIcon={`/src/assets/images/${weatherIcon}`}
+              climateIcon={`/weatherImages/${weatherIcon}`}
               maxTemp={Math.ceil(todayWeather?.temp_max) + "°"}
               minTemp={Math.ceil(todayWeather?.temp_min) + "°"}
             />
@@ -79,7 +79,7 @@ function WeatherDashboard({isMetric, setIsMetric}) {
               <DailyForecast
                 key={i}
                 weekday={day.day}
-                climateIcon={`/src/assets/images/${weatherIcon}`}
+                climateIcon={`/weatherImages/${weatherIcon}`}
                 maxTemp={Math.ceil(day.tempMax) + "°"}
                 minTemp={Math.ceil(day.tempMin) + "°"}
               />

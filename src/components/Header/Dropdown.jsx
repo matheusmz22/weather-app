@@ -58,9 +58,9 @@ function Dropdown({isMetric, setIsMetric}) {
           activeDropdown ? "bg-neutral-600" : "bg-neutral-700"
         } cursor-pointer flex items-center gap-3 h-9 w-fit p-4 sm:p-2.5  sm:h-10 sm:w-30 opacity-95 rounded-lg list-none hover:bg-neutral-600 transition-colors duration-200 dropdown`}
       >
-        <img src="src/assets/images/icon-units.svg" />
+        <img src="/images/icon-units.svg" />
         <p>Units</p>
-        <img src="src/assets/images/icon-dropdown.svg" />
+        <img src="/images/icon-dropdown.svg" />
       </button>
       {activeDropdown && (
         <div className="absolute bg-neutral-800 mt-2 rounded-xl w-60 -right-0.5 border-1 border-neutral-600 shadow-lg p-3 md:w-50 ">
@@ -138,7 +138,7 @@ function Button({isActive, children, onClick}) {
       onClick={onClick}
       className={` ${
         isActive
-          ? "bg-neutral-600 bg-[url(/src/assets/images/icon-checkmark.svg)] bg-no-repeat bg-position-[center_right_15px]"
+          ? "bg-neutral-600 bg-[url(/images/icon-checkmark.svg)] bg-no-repeat bg-position-[center_right_15px]"
           : ""
       } w-full h-10 hover:bg-neutral-600 rounded-md cursor-pointer transition-colors duration-200 text-left `}
     >

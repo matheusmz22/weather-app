@@ -65,7 +65,7 @@ function CurrentWeatherCard() {
         isMediumMobile ? "w-105" : "w-75"
       }  sm:w-full md:w-full h-80 mx-auto sm:mx-0 rounded-2xl`}
     >
-      <div className="absolute inset-0 bg-[url(src/assets/images/bg-today-small.svg)] bg-no-repeat bg-cover bg-center rounded-2xl sm:bg-[url(src/assets/images/bg-today-large.svg)] " />
+      <div className="absolute inset-0 bg-[url(/images/bg-today-small.svg)] bg-no-repeat bg-cover bg-center rounded-2xl sm:bg-[url(/images/bg-today-large.svg)] " />
 
       <div className="relative flex flex-col justify-center items-center  h-full text-white md:flex-row md:items-center md:justify-between md:px-5">
         <div className="items-start justify-center flex flex-col">
@@ -80,7 +80,7 @@ function CurrentWeatherCard() {
         <div className="flex items-center justify-between gap-9 sm:gap-3 mt-4 md:flex-col lg:flex-row lg:mr-5">
           {todayWeather && (
             <img
-              src={`/src/assets/images/${weatherIcon}`}
+              src={`/weatherImages/${weatherIcon}`}
               alt="Sunny day in Berlin, Germany"
               className="w-30 sm:w-35"
             />

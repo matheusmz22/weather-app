@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import useCurrentWeather from "../../Hooks/useCurrentWeather";
 import {formatHour} from "../../helpers/formatHour";
+import {mapWeatherToIcon} from "../../helpers/mapWeatherToIcon";
 
 const tempHours = [
   "12 AM",
@@ -40,10 +41,11 @@ function HourlyForecast({isMetric, setIsMetric}) {
   const {data, isLoading} = useCurrentWeather();
   const forecast = data?.list;
 
-  const hour = formatHour(forecast[0]?.dt_txt, isMetric);
-  console.log(hour);
+  const todayHoursFromApi = forecast?.filter(
+    (day) => weekDays2[new Date(day.dt * 1000).getDay()] === selectedDay
+  );
 
-  console.log(forecast);
+  console.log(todayHoursFromApi);
 
   useEffect(() => {
     function handleClick(e) {
@@ -65,19 +67,19 @@ function HourlyForecast({isMetric, setIsMetric}) {
   }, []);
 
   return (
-    <div className="bg-neutral-800 rounded-xl p-4 w-fit mx-auto md:w-fit lg:w-full relative h-fit pb-6">
-      <div className="text-md font-semibold text-neutral-0 flex items-center justify-between md:gap-4 p-2">
+    <div className="bg-neutral-800 rounded-xl p-4 w-fit mx-auto md:w-fit lg:w-full relative h-fit b-6">
+      <div className="text-md font-semibold text-neutral-0 flex items-center  justify-between md:gap-4 p-2">
         <h1 className="md:text-lef">Hourly forecast</h1>
         <div ref={ref} className="relative">
           <button
             onClick={() => setOpenDropdown((open) => !open)}
-            className="w-full h-9 bg-neutral-700 rounded-md cursor-pointer flex items-center justify-center gap-2 p-3 list-none hover:bg-neutral-600 transition-colors"
+            className="w-full h-9 bg-neutral-700 rounded-md cursor-pointer flex items-center justify-center gap-2 p-4 list-none hover:bg-neutral-600 transition-colors"
           >
             <p className="text-md">{selectedDay}</p>
-            <img src="src/assets/images/icon-dropdown.svg" />
+            <img src="/images/icon-dropdown.svg" />
           </button>
           {openDropdown && (
-            <div className="absolute md:w-45  flex flex-col items-start justify-center bg-neutral-800 font-normal mt-2 rounded-xl w-60 right-2 border-1  border-neutral-600 shadow-lg p-1.5 ">
+            <div className="absolute md:w-45  flex flex-col items-start justify-center bg-neutral-800 font-normal mt-2 rounded-xl sm:w-60 w-40 -right-5 sm:right-2 border-1 border-neutral-600 shadow-lg p-1.5 ">
               {weekDays.map((day) => (
                 <button
                   key={day}
@@ -86,7 +88,7 @@ function HourlyForecast({isMetric, setIsMetric}) {
                     setSelectedDay(day);
                   }}
                   className={`${
-                    day === weekDay ? "bg-neutral-600" : ""
+                    day === selectedDay ? "bg-neutral-600" : ""
                   } hover:bg-neutral-600 md:p-[4px] w-full cursor-pointer p-2 text-left mb-2 rounded-lg `}
                 >
                   <span className="ml-2">{day}</span>
@@ -96,20 +98,26 @@ function HourlyForecast({isMetric, setIsMetric}) {
           )}
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        {tempHours.map((hour) => (
+      <div
+        className="grid h-full gap-5 mt-2"
+        style={{gridTemplateRows: `repeat(${todayHoursFromApi?.length}, 1fr)`}}
+      >
+        {todayHoursFromApi?.map((day) => (
           <div
-            key={hour}
-            className="flex items-center justify-start text-neutral-100 w-full  h-13 border-2 border-neutral-600 bg-neutral-700 gap-2 px-3 rounded-md transition-colors duration-200 "
+            key={day.dt}
+            className="flex items-center justify-between text-neutral-100 w-full h-13 border-2 border-neutral-600 bg-neutral-700 gap-2 px-3 rounded-md transition-colors duration-200 "
           >
-            {isLoading || !data || (
+            {isLoading || !forecast || (
               <>
                 <img
-                  src="src/assets/images/icon-rain.webp"
+                  src={`/weatherImages/${mapWeatherToIcon({
+                    main: day.weather[0].main,
+                    clouds: day.clouds,
+                  })}`}
                   alt="It will be {CLIMATE} at {HOUR}"
                   className="w-9"
                 />
-                <span className="">{hour}</span>
+                <span className="">{formatHour(day.dt_txt, isMetric)}</span>
               </>
             )}
           </div>

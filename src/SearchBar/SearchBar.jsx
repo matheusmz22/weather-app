@@ -19,7 +19,7 @@ function SearchBar() {
           type="text"
           className={`${
             isMediumMobile ? "w-105" : "w-full"
-          } sm:w-100 md:w-115 lg:w-130 rounded-xl sm:h-13 h-12 mx-auto  bg-neutral-700 opacity-90 flex items-center p-5 gap-4 bg-[url(/src/assets/images/icon-search.svg)] bg-no-repeat bg-position-[center_left_15px] placeholder-neutral-200 px-12 text-neutral-0`}
+          } sm:w-100 md:w-115 lg:w-130 rounded-xl sm:h-13 h-12 mx-auto  bg-neutral-700 opacity-90 flex items-center p-5 gap-4 bg-[url(/images/icon-search.svg)] bg-no-repeat bg-position-[center_left_15px] placeholder-neutral-200 px-12 text-neutral-0`}
         ></input>
 
         <div className="flex flex-row items-center justify-center gap-2">
@@ -38,7 +38,7 @@ function SearchBar() {
             disabled={isLoading}
           >
             {isLoading ? (
-              <img src="/src/assets/images/icon-loading.svg" alt="loading" />
+              <img src="/images/icon-loading.svg" alt="loading" />
             ) : (
               <TfiLocationPin />
             )}
