@@ -3,16 +3,6 @@ import useCurrentWeather from "../../Hooks/useCurrentWeather";
 import {formatHour} from "../../helpers/formatHour";
 import {mapWeatherToIcon} from "../../helpers/mapWeatherToIcon";
 
-const tempHours = [
-  "12 AM",
-  "3 AM",
-  "6 AM",
-  "9 AM",
-  "12 PM",
-  "3 PM",
-  "6 PM",
-  "9 PM",
-];
 const weekDays = [
   "Sunday",
   "Monday",
@@ -22,31 +12,33 @@ const weekDays = [
   "Friday",
   "Saturday",
 ];
-const weekDays2 = {
-  0: "Sunday",
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday",
-  4: "Thursday",
-  5: "Friday",
-  6: "Saturday",
-};
+const today = weekDays[new Date().getDay()];
 
-const weekDay = new Date().toLocaleString("default", {weekday: "long"});
-function HourlyForecast({isMetric, setIsMetric}) {
+function HourlyForecast({isMetric}) {
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(weekDay);
+  const [selectedDay, setSelectedDay] = useState(today);
   const ref = useRef(null);
 
   const {data, isLoading} = useCurrentWeather();
   const forecast = data?.list;
 
+  // Get available hours for weather info (today)
   const todayHoursFromApi = forecast?.filter(
-    (day) => weekDays2[new Date(day.dt * 1000).getDay()] === selectedDay
+    (day) => weekDays[new Date(day.dt * 1000).getDay()] === selectedDay
   );
 
-  console.log(todayHoursFromApi);
+  // Get up to what day the API returns
+  const uniqueDayNumbers = [
+    ...new Set(forecast?.map((day) => new Date(day.dt * 1000).getDay())),
+  ];
 
+  // Transform day number to day name
+  const daysFromApi = uniqueDayNumbers.map((num) => weekDays[num]);
+
+  // Get all days available from API
+  const daysArray = [today, ...daysFromApi.filter((d) => d !== today)];
+
+  // Handle opening and closing the hourly forecast dropdown using Escape and Clicking
   useEffect(() => {
     function handleClick(e) {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -80,7 +72,7 @@ function HourlyForecast({isMetric, setIsMetric}) {
           </button>
           {openDropdown && (
             <div className="absolute md:w-45  flex flex-col items-start justify-center bg-neutral-800 font-normal mt-2 rounded-xl sm:w-60 w-40 -right-5 sm:right-2 border-1 border-neutral-600 shadow-lg p-1.5 ">
-              {weekDays.map((day) => (
+              {daysArray.map((day) => (
                 <button
                   key={day}
                   onClick={() => {
@@ -99,29 +91,36 @@ function HourlyForecast({isMetric, setIsMetric}) {
         </div>
       </div>
       <div
-        className="grid h-full gap-5 mt-2"
+        className={`${todayHoursFromApi?.length === 0 ? " text-center my-10 " : "grid h-full gap-5 mt-2"}`}
         style={{gridTemplateRows: `repeat(${todayHoursFromApi?.length}, 1fr)`}}
       >
-        {todayHoursFromApi?.map((day) => (
-          <div
-            key={day.dt}
-            className="flex items-center justify-between text-neutral-100 w-full h-13 border-2 border-neutral-600 bg-neutral-700 gap-2 px-3 rounded-md transition-colors duration-200 "
-          >
-            {isLoading || !forecast || (
-              <>
-                <img
-                  src={`/weatherImages/${mapWeatherToIcon({
-                    main: day.weather[0].main,
-                    clouds: day.clouds,
-                  })}`}
-                  alt="It will be {CLIMATE} at {HOUR}"
-                  className="w-9"
-                />
-                <span className="">{formatHour(day.dt_txt, isMetric)}</span>
-              </>
-            )}
-          </div>
-        ))}
+        {todayHoursFromApi?.length < 2 ? (
+          <span className="text-neutral-100 h-13 md:text-md lg:text-lg xl:text-xl text-sm ">
+            There is no Hourly Forecast available yet for{" "}
+            <strong>{selectedDay}</strong>
+          </span>
+        ) : (
+          todayHoursFromApi?.map((day) => (
+            <div
+              key={day.dt}
+              className="flex items-center justify-between text-neutral-100 w-full h-13 border-2 border-neutral-600 bg-neutral-700 gap-2 px-3 rounded-md transition-colors duration-200 "
+            >
+              {isLoading || !forecast || (
+                <>
+                  <img
+                    src={`/weatherImages/${mapWeatherToIcon({
+                      main: day.weather[0].main,
+                      clouds: day.clouds,
+                    })}`}
+                    alt="It will be {CLIMATE} at {HOUR}"
+                    className="w-9"
+                  />
+                  <span className="">{formatHour(day.dt_txt, isMetric)}</span>
+                </>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
