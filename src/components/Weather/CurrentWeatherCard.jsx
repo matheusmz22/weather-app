@@ -1,12 +1,8 @@
 import {useGeolocation} from "../../context/GeolocationContext";
+import {getCountryName} from "../../helpers/getCountryNameByCode";
 import {mapWeatherToIcon} from "../../helpers/mapWeatherToIcon";
 import useCurrentWeather from "../../Hooks/useCurrentWeather";
 import useIsMobile from "../../Hooks/useIsMobile";
-
-const regionNames = new Intl.DisplayNames(["en"], {type: "region"});
-function getCountryName(countryCode) {
-  return regionNames.of(countryCode);
-}
 
 function CurrentWeatherCard() {
   const {isMediumMobile} = useIsMobile();

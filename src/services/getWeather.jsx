@@ -1,4 +1,4 @@
-const API_KEY = "8e58d0a6c5d8a964536cdf8b2ccd65aa";
+import {API_KEY} from "../.env/apiKey";
 
 export async function getWeather(
   latitude,
