@@ -6,11 +6,15 @@ export async function getWeather(
   units = "metric",
   endpoint = "forecast"
 ) {
-  const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=${units}`
-  );
+  try {
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=${units}`
+    );
 
-  const data = await res.json();
+    const data = await res.json();
 
-  return data;
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
 }

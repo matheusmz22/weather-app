@@ -3,10 +3,14 @@ import useIsMobile from "../Hooks/useIsMobile";
 import {TfiLocationPin} from "react-icons/tfi";
 
 import {useGeolocation} from "../context/GeolocationContext";
+import {useState} from "react";
+import useSearchCountry from "../Hooks/useSearchCountry";
 
 function SearchBar() {
+  const [search, setSearch] = useState("");
   const {isMediumMobile} = useIsMobile();
   const {_, isLoading, fetchLocation} = useGeolocation();
+  const {data, isLoadingSearch} = useSearchCountry(search);
 
   return (
     <div className="flex flex-col items-center gap-2 sm:gap-5">
@@ -15,6 +19,10 @@ function SearchBar() {
       </h1>
       <div className="flex items-center justify-between flex-col sm:flex-row gap-2 mx-auto">
         <input
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
           placeholder="Search for a place..."
           type="text"
           className={`${
