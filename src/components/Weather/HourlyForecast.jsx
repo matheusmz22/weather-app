@@ -14,12 +14,12 @@ const weekDays = [
 ];
 const today = weekDays[new Date().getDay()];
 
-function HourlyForecast({isMetric}) {
+function HourlyForecast({isMetric, lat, lon}) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [selectedDay, setSelectedDay] = useState(today);
   const ref = useRef(null);
 
-  const {data, isLoading} = useCurrentWeather();
+  const {data, isLoading} = useCurrentWeather("forecast", lat, lon);
   const forecast = data?.list;
 
   // Get available hours for weather info (today)
@@ -60,7 +60,7 @@ function HourlyForecast({isMetric}) {
 
   return (
     <div className="bg-neutral-800 rounded-xl p-4 w-fit mx-auto md:w-fit lg:w-full relative h-fit b-6">
-      <div className="text-md font-semibold text-neutral-0 flex items-center  justify-between md:gap-4 p-2">
+      <div className="text-md font-semibold text-neutral-0 flex items-center  justify-between md:gap-4 p-2 gap-3">
         <h1 className="md:text-lef">Hourly forecast</h1>
         <div ref={ref} className="relative">
           <button

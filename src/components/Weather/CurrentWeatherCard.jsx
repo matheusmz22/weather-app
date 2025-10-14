@@ -4,10 +4,10 @@ import {mapWeatherToIcon} from "../../helpers/mapWeatherToIcon";
 import useCurrentWeather from "../../Hooks/useCurrentWeather";
 import useIsMobile from "../../Hooks/useIsMobile";
 
-function CurrentWeatherCard() {
+function CurrentWeatherCard({lat, lon, selectedSearch}) {
   const {isMediumMobile} = useIsMobile();
   const {_, city} = useGeolocation();
-  const {data, isLoading} = useCurrentWeather("weather");
+  const {data, isLoading} = useCurrentWeather("weather", lat, lon);
 
   const todayWeather = data?.main;
   const currentTemp = Math.ceil(todayWeather?.temp);
@@ -66,7 +66,7 @@ function CurrentWeatherCard() {
       <div className="relative flex flex-col justify-center items-center  h-full text-white md:flex-row md:items-center md:justify-between md:px-5">
         <div className="items-start justify-center flex flex-col">
           <h1 className="font-bold text-3xl">
-            {city}
+            {selectedSearch || city}
             {data?.city?.country && `, ${getCountryName(data.city.country)}`}
           </h1>
           <p className="text-md opacity-90 ">

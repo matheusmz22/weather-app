@@ -3,14 +3,14 @@ import {useTemperatureUnit} from "../context/UnitsContext";
 import {getWeather} from "../services/getWeather";
 import {useGeolocation} from "../context/GeolocationContext";
 
-function useCurrentWeather(endpoint = "forecast") {
+function useCurrentWeather(endpoint = "forecast", lat = null, lon = null) {
   const {activeTemperature} = useTemperatureUnit();
   const {coords} = useGeolocation();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState();
 
-  const latitude = coords?.latitude;
-  const longitude = coords?.longitude;
+  const latitude = lat || coords?.latitude;
+  const longitude = lon || coords?.longitude;
 
   useEffect(() => {
     if (!latitude || !longitude) return;

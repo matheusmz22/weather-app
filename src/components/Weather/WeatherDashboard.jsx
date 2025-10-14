@@ -9,15 +9,28 @@ import DailyForecast from "./DailyForecast";
 import HourlyForecast from "./HourlyForecast";
 import StatCard from "./StatCard";
 
-function WeatherDashboard({isMetric, setIsMetric}) {
+function WeatherDashboard({
+  isMetric,
+  setIsMetric,
+  selectedCoords = null,
+  selectedSearch,
+}) {
   const {isMediumMobile} = useIsMobile();
   const {activeWindSpeed} = useWindUnit();
   const {activePrecipitation} = usePrecipitationUnit();
 
-  const {data: currentWeather, _} = useCurrentWeather("weather");
+  const {data: currentWeather, _} = useCurrentWeather(
+    "weather",
+    selectedCoords?.lat,
+    selectedCoords?.lon
+  );
   const todayWeather = currentWeather?.main;
 
-  const {data: forecastData} = useCurrentWeather("forecast");
+  const {data: forecastData} = useCurrentWeather(
+    "forecast",
+    selectedCoords?.lat,
+    selectedCoords?.lon
+  );
   const dailyForecast = groupForecastByDay(forecastData?.list);
 
   const weatherIcon = mapWeatherToIcon({
@@ -33,24 +46,44 @@ function WeatherDashboard({isMetric, setIsMetric}) {
   const date = new Date();
   const weekDay = date.toLocaleString("default", {weekday: "short"});
 
+  console.log(todayWeather);
+
   return (
     <div className="grid gap-3 mt-4 sm:grid-cols-8 md:mx-20">
       <div className="col-span-3 sm:col-span-5">
-        <CurrentWeatherCard />
+        <CurrentWeatherCard
+          lat={selectedCoords?.lat}
+          lon={selectedCoords?.lon}
+          selectedSearch={selectedSearch}
+        />
       </div>
 
       <div className="col-span-3 sm:col-span-5 place-items-stretch">
         <div className="flex flex-wrap items-center justify-center gap-4 sm:justify-between lg:justify-between ">
           <StatCard
+            lat={selectedCoords?.lat}
+            lon={selectedCoords?.lon}
             title="Feels like"
             content={`${Math.ceil(todayWeather?.feels_like)}°`}
           />
-          <StatCard title="Humidity" content={`${todayWeather?.humidity}%`} />
+          <StatCard
+            title="Humidity"
+            content={`${todayWeather?.humidity}%`}
+            lat={selectedCoords?.lat}
+            lon={selectedCoords?.lon}
+          />
           <StatCard
             title="Wind"
             content={`${currentWeather?.wind?.speed.toFixed(1)} ${activeWindSpeed}`}
+            lat={selectedCoords?.lat}
+            lon={selectedCoords?.lon}
           />
-          <StatCard title="Precipitation" content={precipitation} />
+          <StatCard
+            title="Precipitation"
+            content={precipitation}
+            lat={selectedCoords?.lat}
+            lon={selectedCoords?.lon}
+          />
         </div>
       </div>
 
@@ -69,6 +102,8 @@ function WeatherDashboard({isMetric, setIsMetric}) {
               climateIcon={`/weatherImages/${weatherIcon}`}
               maxTemp={Math.ceil(todayWeather?.temp_max) + "°"}
               minTemp={Math.ceil(todayWeather?.temp_min) + "°"}
+              lat={selectedCoords?.lat}
+              lon={selectedCoords?.lon}
             />
           )}
 
@@ -77,6 +112,8 @@ function WeatherDashboard({isMetric, setIsMetric}) {
 
             return (
               <DailyForecast
+                lat={selectedCoords?.lat}
+                lon={selectedCoords?.lon}
                 key={i}
                 weekday={day.day}
                 climateIcon={`/weatherImages/${weatherIcon}`}
@@ -88,7 +125,12 @@ function WeatherDashboard({isMetric, setIsMetric}) {
         </div>
       </div>
       <div className="col-span-3 sm:col-start-6 sm:row-start-1 sm:row-span-3 md:row-span-2 md:row-start-1 lg:row-span-3 lg:row-start-1">
-        <HourlyForecast isMetric={isMetric} setIsMetric={setIsMetric} />
+        <HourlyForecast
+          isMetric={isMetric}
+          setIsMetric={setIsMetric}
+          lat={selectedCoords?.lat}
+          lon={selectedCoords?.lon}
+        />
       </div>
     </div>
   );
