@@ -46,8 +46,6 @@ function WeatherDashboard({
   const date = new Date();
   const weekDay = date.toLocaleString("default", {weekday: "short"});
 
-  console.log(todayWeather);
-
   return (
     <div className="grid gap-3 mt-4 sm:grid-cols-8 md:mx-20">
       <div className="col-span-3 sm:col-span-5">

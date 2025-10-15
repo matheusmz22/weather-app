@@ -9,7 +9,6 @@ function StatCard({title, content, lat, lon}) {
 
   const hasCoords = (lat && lon) || coords;
 
-  console.log(isLoading || !coords || lat || lon);
   return (
     <div
       className={`${isGalaxy ? "w-35" : "w-37"} ${
