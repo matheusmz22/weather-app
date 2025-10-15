@@ -64,16 +64,16 @@ function CurrentWeatherCard({lat, lon, selectedSearch}) {
       <div className="absolute inset-0 bg-[url(/images/bg-today-small.svg)] bg-no-repeat bg-cover bg-center rounded-2xl sm:bg-[url(/images/bg-today-large.svg)] " />
 
       <div className="relative flex flex-col justify-center items-center  h-full text-white md:flex-row md:items-center md:justify-between md:px-5">
-        <div className="items-start justify-center flex flex-col">
-          <h1 className="font-bold text-3xl">
+        <div className="items-center xl:items-start justify-center flex flex-col">
+          <h1 className="font-bold text-2xl text-center xl:text-start">
             {selectedSearch || city}
             {data?.city?.country && `, ${getCountryName(data.city.country)}`}
           </h1>
-          <p className="text-md opacity-90 ">
+          <p className="text-md opacity-90">
             {day}, {month} {monthDay}, {year}
           </p>
         </div>
-        <div className="flex items-center justify-between gap-9 sm:gap-3 mt-4 md:flex-col lg:flex-row lg:mr-5">
+        <div className="flex items-center justify-between gap-9 sm:gap-3 mt-4 md:flex-col xl:flex-row lg:mr-5">
           {todayWeather && (
             <img
               src={`/weatherImages/${weatherIcon}`}
